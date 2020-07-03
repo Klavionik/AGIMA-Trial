@@ -1,0 +1,53 @@
+{% extends 'shop/base.html' %}
+{% load humanize %}
+
+{% block title %}
+    <title>Корзина | Agima Shop</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-lg-6 col-md-9 col-sm-12 order-md-2 mb-4">
+                <div class="d-flex mb-3">
+                    <h3>Ваша корзина</h3>
+                    {% if items %}
+                        <a href="?clear=1" class="btn btn-danger ml-auto">Очистить корзину</a>
+                    {% endif %}
+                </div>
+                <ul class="list-group mb-3">
+                    {% for item in items %}
+                        <li class="list-group-item">
+                            <div class="media">
+                                <img src="{{ item.product.image.url }}" class="mr-3" alt="{{ item.product.title }}"
+                                     width="64px">
+                                <div class="media-body text-muted">
+                                    <a class="mt-0" href="{{ item.product.get_absolute_url }}"><h6>{{ item.product.title }}</h6></a>
+                                    {{ item.product.description|truncatechars:"100" }}
+                                </div>
+                            </div>
+                            <hr class="mt-2 mb-1">
+                            <div class="d-flex justify-content-between">
+                                <span>Кол-во: {{ item.qty }} шт.</span>
+                                <span>{{ item.total_price|intcomma }} руб.</span>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if items %}
+                    <div class="d-flex justify-content-around mb-2">
+                        <h5 class="">Товаров в корзине:</h5>
+                        <h5 class="">{{ cart.number_of_items }} шт.</h5>
+                    </div>
+                    <div class="d-flex justify-content-around mb-2">
+                        <h5 class="">Сумма заказа:</h5>
+                        <h5 class="">{{ cart.subtotal|intcomma }} руб.</h5>
+                    </div>
+                {% else %}
+                    <h4>Ваша корзина пуста.<br>Добавьте в нее что-нибудь!</h4>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
